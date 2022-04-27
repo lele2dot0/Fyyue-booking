@@ -1,16 +1,16 @@
 {% extends 'layouts/main.html' %}
-{% block title %}{{ artist.name }} | Artist{% endblock %}
+{% block title %}{{ artist_details.name }} | Artist{% endblock %}
 {% block content %}
 <div class="row">
 	<div class="col-sm-6">
 		<h1 class="monospace">
-			{{ artist.name }}
+			{{ artist_details.name }}
 		</h1>
 		<p class="subtitle">
-			ID: {{ artist.id }}
+			ID: {{ artist_details.id }}
 		</p>
 		<div class="genres">
-			{% set genres = artist.genres %}
+			{% set genres = artist_details.genres %}
 			{% set genre_list = genres.split(',') %}
 			{% for genre in genre_list %}
 			{% if '{' in genre  %}
@@ -22,22 +22,22 @@
 			{% endfor %}
 		</div>
 		<p>
-			<i class="fas fa-globe-americas"></i> {{ artist.city }}, {{ artist.state }}
+			<i class="fas fa-globe-americas"></i> {{ artist_details.city }}, {{ artist_details.state }}
 		</p>
 		<p>
-			<i class="fas fa-phone-alt"></i> {% if artist.phone %}{{ artist.phone }}{% else %}No Phone{% endif %}
+			<i class="fas fa-phone-alt"></i> {% if artist_details.phone %}{{ artist_details.phone }}{% else %}No Phone{% endif %}
         </p>
         <p>
-			<i class="fas fa-link"></i> {% if artist.website_link %}<a href="{{ artist.website_link }}" target="_blank">{{ artist.website_link }}</a>{% else %}No Website{% endif %}
+			<i class="fas fa-link"></i> {% if artist_details.website_link %}<a href="{{ artist_details.website_link }}" target="_blank">{{ artist_details.website_link }}</a>{% else %}No Website{% endif %}
 		</p>
 		<p>
-			<i class="fab fa-facebook-f"></i> {% if artist.facebook_link %}<a href="{{ artist.facebook_link }}" target="_blank">{{ artist.facebook_link }}</a>{% else %}No Facebook Link{% endif %}
+			<i class="fab fa-facebook-f"></i> {% if artist_details.facebook_link %}<a href="{{ artist_details.facebook_link }}" target="_blank">{{ artist_details.facebook_link }}</a>{% else %}No Facebook Link{% endif %}
         </p>
-		{% if artist.seeking_venue %}
+		{% if artist_details.seeking_venue %}
 		<div class="seeking">
 			<p class="lead">Currently seeking performance venues</p>
 			<div class="description">
-				<i class="fas fa-quote-left"></i> {{ artist.seeking_description }} <i class="fas fa-quote-right"></i>
+				<i class="fas fa-quote-left"></i> {{ artist_details.seeking_description }} <i class="fas fa-quote-right"></i>
 			</div>
 		</div>
 		{% else %}	
@@ -47,47 +47,43 @@
 		{% endif %}
 	</div>
 	<div class="col-sm-6">
-		<img src="{{ artist.image_link }}" alt="Artist Image" />
+		<img src="{{ artist_details.image_link }}" alt="Artist Image" />
 	</div>
 </div>
 <section>
 	<h2 class="monospace">{{ upcoming_shows_count }} Upcoming {% if upcoming_shows_count == 1 %}Show{% else %}Shows{% endif %}</h2>
 	<div class="row">
-		{% for show in upcoming_shows %}
+		{% for venue, artist, show in show_details %}
+		{% if show in upcoming_shows %}
 		<div class="col-sm-4">
 			<div class="tile tile-show">
-				{% for venue in show_venues %}
-				{% if show.venue_id == venue.id %}
 				<img src="{{ venue.image_link }}" alt="Show Venue Image" />
 				<h5><a href="/venues/{{ venue.id }}">{{ venue.name }}</a></h5>
 				<h6>{{ show.show_time|datetime('full') }}</h6>
-				{% endif %}
-				{% endfor %}
 			</div>
 		</div>
+		{% endif %}
 		{% endfor %}
 	</div>
 </section>
 <section>
 	<h2 class="monospace">{{ past_shows_count }} Past {% if past_shows_count == 1 %}Show{% else %}Shows{% endif %}</h2>
 	<div class="row">
-		{% for show in past_shows %}
+		{% for venue, artist, show in show_details %}
+		{% if show in past_shows %}
 		<div class="col-sm-4">
 			<div class="tile tile-show">
-				{% for venue in show_venues %}
-				{% if show.venue_id == venue.id %}
 				<img src="{{ venue.image_link }}" alt="Show Venue Image" />
 				<h5><a href="/venues/{{ venue.id }}">{{ venue.name }}</a></h5>
 				<h6>{{ show.show_time|datetime('full') }}</h6>
-				{% endif %}
-				{% endfor %}
 			</div>
 		</div>
+		{% endif %}
 		{% endfor %}
 	</div>
 </section>
 
-<a href="/artists/{{ artist.id }}/edit"><button class="btn btn-primary btn-lg">Edit</button></a>
+<a href="/artists/{{ artist_details.id }}/edit"><button class="btn btn-primary btn-lg">Edit</button></a>
 
 {% endblock %}
 

@@ -2,9 +2,11 @@
 {% block title %}Fyyur | Shows{% endblock %}
 {% block content %}
 <div class="row shows">
-    {%for show in shows  %}
-    {%for artist in artists  %}
-    {%for venue in venues  %}
+    {% for show in shows %}
+    {% for artist in artists %}
+    {% if artist.id == show.artist_id %}
+    {% for venue in venues %}
+    {% if venue.id == show.venue_id %}
     <div class="col-sm-4">
         <div class="tile tile-show">
             <img src="{{ artist.image_link }}" alt="Artist Image" />
@@ -14,7 +16,9 @@
             <h5><a href="/venues/{{ venue.id }}">{{ venue.name }}</a></h5>
         </div>
     </div>
+    {% endif %} 
     {% endfor %}
+    {% endif %}
     {% endfor %}
     {% endfor %}
 </div>
