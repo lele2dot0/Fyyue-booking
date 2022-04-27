@@ -428,7 +428,7 @@ def shows():
   artists = Artist.query.all()
   venues = Venue.query.all()
   
-  return render_template('pages/shows.html', shows=shows, artist=artist, venues=venues)
+  return render_template('pages/shows.html', shows=shows, artists=artists, venues=venues)
 
 @app.route('/shows/create')
 def create_shows():
